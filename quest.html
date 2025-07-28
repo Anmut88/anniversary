@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our 11th Anniversary Quest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+    * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .active {
+            display: block;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        /* Form Elements */
+        button, input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            margin-right: 10px;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .hint-btn {
+            background-color: #f39c12;
+        }
+
+        .hint-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .hint-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            width: 100%;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* Feedback Elements */
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .hint {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #fff3cd;
+            color: #856404;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .hint-container {
+            margin-top: 15px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* Handwriting Style */
+        .handwriting {
+            font-family: 'Dancing Script', cursive;
+            font-size: 20px;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .date-input {
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        /* Number Checker */
+        .number-checker {
+            margin-top: 15px;
+        }
+
+        .number-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .digit-box {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .check-btn {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .number-feedback {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .digit-feedback {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .correct-digit {
+            color: green;
+        }
+
+        .incorrect-digit {
+            color: red;
+        }
+
+        /* Video Container */
+        .video-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Images */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .page {
+                padding: 15px;
+            }
+
+            .handwriting {
+                font-size: 18px;
+            }
+
+            button, input[type="submit"] {
+                padding: 10px 15px;
+                font-size: 14px;
+                max-width: 100%;
+            }
+
+            .digit-box {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .number-feedback {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .handwriting {
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Introduction Page -->
+    <div id="intro" class="page active">
+        <h1>Welcome to our 11th Anniversary Quest!</h1>
+        <div style="text-align: center; margin: 20px 0;">
+            <img src="https://cdn.pixabay.com/photo/2017/09/23/16/33/pixel-heart-2779422_640.png"
+                alt="Romantic Heart"
+                style="width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));">
+        </div>
+        <div class="handwriting">
+            <p>My love,</p>
+            <p>Today is our anniversary and I hope you have a good mood. I have prepared a surprise for you, but I won't give it to you so easy.</p>
+            <p>To start the quest, please enter our wedding date:</p>
+
+            <form onsubmit="checkWeddingDate(event)" style="margin: 20px 0;">
+                <div class="date-input">
+                    <input type="text" id="weddingDate" placeholder="dd/mm/yyyy" required autofocus inputmode="numeric">
+                </div>
+                <button type="submit" style="margin-top: 10px;">Begin Quest</button>
+            </form>
+
+            <div id="dateFeedback" style="color: #721c24; display: none; margin-top: 10px;">
+                That's not our wedding date. Try again!
+            </div>
+        </div>
+    </div>
+
+    <!-- Question 1 -->
+    <div id="question1" class="page">
+        <h2>Question 1</h2>
+         <div style="text-align: center; margin: 20px 0;">
+            <img src="zigzag.jpg"
+                 alt="Romantic Heart"
+                 style="width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));">
+        </div>
+        <div class="handwriting">
+            <p>I know you remember our dates better than me, but … </p>
+            <p style="margin-left: 100px;">do you remember the date when you made me proposal?</p>
+        </div>
+        <form onsubmit="checkAnswer(event, 'question1', '13/12/2013')">
+            <input type="text" id="answer1" placeholder="dd/mm/yyyy" required autofocus>
+            <div class="button-group">
+                <input type="submit" value="Submit Answer">
+                <button type="button" class="hint-btn" id="hintButton1" onclick="showHint('hint1')" disabled>Get Hint (available in 2:00)</button>
+            </div>
+        </form>
+        <div id="feedback1" class="feedback"></div>
+        <div class="hint-container">
+            <div id="hint1" class="hint">
+                <strong>Hint 1:</strong> It was Friday.
+            </div>
+            <div id="hint1-2" class="hint" style="display: none;">
+                <strong>Hint 2:</strong> The day is the same as the year.
+            </div>
+        </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div id="question2" class="page">
+        <h2>Question 2</h2>
+         <div style="text-align: center; margin: 20px 0;">
+            <img src="movie.jfif"
+                 alt="Romantic Heart"
+                 style="width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));">
+        </div>
+        <div class="handwriting">
+            <p>We've been together 11 years, but do you know me well? If yes, what's my favorite romantic movie?</p>
+            <p>Write answer in Russian - this is your first hint</p>
+        </div>
+        <form onsubmit="checkAnswer(event, 'question2', 'все будет хорошо')">
+            <input type="text" id="answer2" placeholder="Название..." required autofocus>
+            <div class="button-group">
+                <input type="submit" value="Submit Answer">
+                <button type="button" class="hint-btn" id="hintButton2" onclick="showHint('hint2')" disabled>Get Hint (available in 0:30)</button>
+            </div>
+        </form>
+        <div id="feedback2" class="feedback"></div>
+        <div class="hint-container">
+            <div id="hint2" class="hint">
+                <strong>Hint 1:</strong> Main male character is young genius mathematician (fiction).
+            </div>
+            <div id="hint2-2" class="hint" style="display: none;">
+                <strong>Hint 2:</strong> Other main characters are named as my son and your closest relative whose name is not the same as mine.
+            </div>
+            <div id="hint2-3" class="hint" style="display: none;">
+                <strong>Hint 3:</strong> I did not know it is that difficult to solve this task. Let me make your life easier - using hints find the movie on this page:
+                <a href="https://www.kino-teatr.ru/kino/movie/ros/y1995/g14/" target="_blank" rel="noopener noreferrer">https://www.kino-teatr.ru/kino/movie/ros/y1995/g14/</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div id="question3" class="page">
+        <h2>Question 3</h2>
+        <div style="text-align: center; margin: 20px 0;">
+            <img src="https://cdn.pixabay.com/photo/2017/09/23/16/33/pixel-heart-2779422_640.png"
+                 alt="Romantic Heart"
+                 style="width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));">
+        </div>
+        <div class="handwriting">
+            <p>Machine will help you answer this question.</p>
+        </div>
+        <form onsubmit="checkAnswer(event, 'question3', '804')">
+            <input type="text" id="answer3" placeholder="Your answer..." required autofocus>
+            <div class="button-group">
+                <input type="submit" value="Submit Answer">
+                <button type="button" class="hint-btn" id="hintButton3" onclick="showHint('hint3')" disabled>Get Hint (available in 0:30)</button>
+            </div>
+        </form>
+        <div id="feedback3" class="feedback"></div>
+        <div class="hint-container">
+            <div id="hint3" class="hint">
+                <strong>Hint 1:</strong> Machines are all around us, some are inside the house, others outside.
+            </div>
+            <div id="hint3-2" class="hint" style="display: none;">
+                <strong>Hint 2:</strong> The one you need is outside.
+            </div>
+            <div id="hint3-3" class="hint" style="display: none;">
+                <strong>Hint 3:</strong> Search for the object that all superstitious people obsessed with
+            </div>
+        </div>
+    </div>
+
+    <!-- Question 4 -->
+    <div id="question4" class="page">
+        <h2>Question 4</h2>
+        <div style="text-align: center; margin: 20px 0;">
+            <img src="sport.JPG"
+                 alt="sport"
+                 style="width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));">
+        </div>
+        <div class="handwriting">
+            <p>You know that I care about your health, so this task will require you to do some physical exercises!
+                Count the number of windows in our block corridor, number of vases in our apartment,
+                number of frying pans in the kitchen, and the number of potted plants we have.</p>
+            <p>The sum of all numbers is the key.</p>
+        </div>
+        <form onsubmit="checkAnswer(event, 'question4', '8')">
+            <input type="text" id="answer4" placeholder="Enter the key" required autofocus>
+            <div class="button-group">
+                <input type="submit" value="Submit Answer">
+                <button type="button" class="hint-btn" id="hintButton4" onclick="showHint('hint4')" disabled>Get Hint (available in 2:00)</button>
+            </div>
+        </form>
+        <div id="feedback4" class="feedback"></div>
+        <div class="hint-container">
+            <div id="hint4" class="hint">
+                <strong>Hint 1:</strong> Check your 4 numbers:
+                <div class="number-checker">
+                    <div class="number-inputs">
+                        <input type="number" min="0" max="9" class="digit-box" data-position="1">
+                        <input type="number" min="0" max="9" class="digit-box" data-position="2">
+                        <input type="number" min="0" max="9" class="digit-box" data-position="3">
+                        <input type="number" min="0" max="9" class="digit-box" data-position="4">
+                        <button type="button" class="check-btn" onclick="checkNumbers()">Check</button>
+                    </div>
+                    <div class="number-feedback">
+                        <span class="digit-feedback" data-position="1"></span>
+                        <span class="digit-feedback" data-position="2"></span>
+                        <span class="digit-feedback" data-position="3"></span>
+                        <span class="digit-feedback" data-position="4"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="hint4-2" class="hint" style="display: none;">
+                <strong>Hint 2:</strong> Plants, not pots!
+            </div>
+            <div id="hint4-3" class="hint" style="display: none;">
+                <strong>Hint 3:</strong>The frying pans are not only in the kitchen. Where else can I store them?
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Question 5 -->
+    <div id="question5" class="page">
+        <h2>Question 5</h2>
+        <div style="text-align: center; margin: 20px 0;">
+            <img src="gift.JPEG"
+                 alt="gift"
+                 style="width: 150px; height: auto; filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));">
+        </div>
+        <div class="handwriting">
+            <p>Where is the key that you found in the car? What does it open?</p>
+            <p>Your last challenge is there</p>
+        </div>
+        <form onsubmit="checkAnswer(event, 'question5', 'love')">
+            <input type="text" id="answer5" placeholder="Your answer..." required autofocus>
+            <div class="button-group">
+                <input type="submit" value="Submit Answer">
+                <button type="button" class="hint-btn" id="hintButton5" onclick="showHint('hint5')" disabled>Get Hint (available in 2:00)</button>
+            </div>
+        </form>
+        <div id="feedback5" class="feedback"></div>
+        <div class="hint-container">
+            <div id="hint5" class="hint">
+                <strong>Hint 1:</strong> The object you are looking for is in the room I cleaned last week.
+            </div>
+            <div id="hint5-2" class="hint" style="display: none;">
+                <strong>Hint 2:</strong> Look around you to find the key.
+            </div>
+        </div>
+    </div>
+
+    <!-- Conclusion Page -->
+<div id="conclusion" class="page">
+    <h1>Congratulations!</h1>
+    <div class="handwriting">
+        <p>You passed the quest and your reward awaits you!</p>
+        <p>Check the...</p>
+    </div>
+
+    <div class="video-container">
+        <video autoplay loop muted playsinline>
+            <source src="Video.mov" type="video/mp4">
+
+        </video>
+    </div>
+</div>
+
+    <script>
+        // ===== CONFIGURATION =====
+        const HINT_DELAY_SECONDS = 3; // Change this value to set hint delay for all questions
+
+        const QUESTION_SETTINGS = {
+            1: { hints: 2 }, // Question 1 has 2 hints
+            2: { hints: 3 }, // Question 2 has 3 hints
+            3: { hints: 3 }, // Question 2 has 3 hints
+            4: { hints: 3 },
+            5: { hints: 2 }
+        };
+
+        // ===== GAME STATE =====
+        const pages = ['intro', 'question1', 'question2', 'question3', 'question4', 'question5', 'conclusion'];
+        const hintTimers = {};
+        const hintStates = {};
+
+        // Initialize hint states based on question settings
+        for (const [questionNum, settings] of Object.entries(QUESTION_SETTINGS)) {
+            hintStates[questionNum] = {
+                hintsShown: 0,
+                maxHints: settings.hints
+            };
+        }
+
+        // ===== CORE FUNCTIONS =====
+        function checkNumbers() {
+                const correctNumbers = [8, 0, 4, 2]; // Replace with your actual correct numbers
+
+                for (let i = 1; i <= 4; i++) {
+                    const input = document.querySelector(`.digit-box[data-position="${i}"]`);
+                    const feedback = document.querySelector(`.digit-feedback[data-position="${i}"]`);
+                    const userNumber = parseInt(input.value) || 0;
+
+                    if (userNumber === correctNumbers[i-1]) {
+                        feedback.textContent = "✓";
+                        feedback.className = "digit-feedback correct-digit";
+                        input.style.borderColor = "green";
+                    } else {
+                        feedback.textContent = "✗";
+                        feedback.className = "digit-feedback incorrect-digit";
+                        input.style.borderColor = "red";
+                    }
+                }
+            }
+
+        function checkWeddingDate(event) {
+            event.preventDefault();
+            const dateInput = document.getElementById('weddingDate');
+            const enteredDate = dateInput.value;
+            const feedback = document.getElementById('dateFeedback');
+
+            if (enteredDate === '02/08/2014') {
+                nextPage('intro');
+            } else {
+                // Clear the input field and show feedback
+                dateInput.value = '';
+                feedback.style.display = 'block';
+                // Set focus back to the input field
+                dateInput.focus();
+            }
+        }
+
+        function nextPage(currentPageId) {
+            const currentIndex = pages.indexOf(currentPageId);
+            if (currentIndex < pages.length - 1) {
+                document.getElementById(currentPageId).classList.remove('active');
+                const nextPageId = pages[currentIndex + 1];
+                document.getElementById(nextPageId).classList.add('active');
+
+                // Auto-focus the input field for the new question
+                const nextQuestionNum = nextPageId.replace('question', '');
+                if (nextQuestionNum && !isNaN(nextQuestionNum)) {
+                    const inputField = document.getElementById(`answer${nextQuestionNum}`);
+                    if (inputField) {
+                        inputField.focus();
+
+                        // For mobile devices, we need to ensure the virtual keyboard appears
+                        inputField.addEventListener('focus', function() {
+                            this.setAttribute('autofocus', 'true');
+                        }, { once: true });
+                    }
+                }
+
+                if (nextPageId.startsWith('question')) {
+                    const questionNum = nextPageId.replace('question', '');
+                    startHintTimer(questionNum);
+                }
+            }
+        }
+
+        function startHintTimer(questionNum) {
+            if (hintTimers[questionNum]) {
+                clearInterval(hintTimers[questionNum]);
+            }
+
+            const button = document.getElementById(`hintButton${questionNum}`);
+            if (!button) return;
+
+            let seconds = HINT_DELAY_SECONDS;
+            updateHintButton(button, seconds);
+
+            hintTimers[questionNum] = setInterval(() => {
+                seconds--;
+                updateHintButton(button, seconds);
+
+                if (seconds <= 0) {
+                    clearInterval(hintTimers[questionNum]);
+                    button.textContent = "Get Hint";
+                    button.disabled = false;
+                }
+            }, 1000);
+        }
+
+        function updateHintButton(button, seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            button.textContent = `Get Hint (available in ${mins}:${secs < 10 ? '0' : ''}${secs})`;
+        }
+
+        function showHint(hintId) {
+            const questionNum = hintId.replace('hint', '').replace(/-.*/, '');
+            const button = document.getElementById(`hintButton${questionNum}`);
+            const state = hintStates[questionNum];
+
+            // Show the next hint
+            state.hintsShown++;
+            const hintToShow = state.hintsShown === 1 ? hintId : `${hintId}-${state.hintsShown}`;
+            document.getElementById(hintToShow).style.display = 'block';
+
+            // Update button state
+            if (state.hintsShown >= state.maxHints) {
+                button.disabled = true;
+                button.textContent = "No more hints available";
+            } else {
+                button.disabled = true;
+                startHintTimer(questionNum);
+            }
+        }
+
+        function checkAnswer(event, pageId, correctAnswer) {
+            event.preventDefault();
+            const questionNumber = pageId.replace('question', '');
+            const answerInput = document.getElementById(`answer${questionNumber}`);
+            const feedbackDiv = document.getElementById(`feedback${questionNumber}`);
+
+            // Ultimate normalization - handles all edge cases
+            const normalize = (str) => {
+                return str
+                    .replace(/^["'\s]+|["'\s]+$/g, '')  // Remove surrounding quotes AND whitespace
+                    .replace(/\s{2,}/g, ' ')             // Collapse multiple spaces
+                    .toLowerCase()                       // Standardize case
+                    .trim();                            // Final trim (redundant but safe)
+            };
+
+            const userAnswer = normalize(answerInput.value);
+            const correctAnswerNormalized = normalize(correctAnswer);
+
+            if (userAnswer === correctAnswerNormalized) {
+                feedbackDiv.textContent = "Correct! Well done!";
+                feedbackDiv.className = "feedback correct";
+                feedbackDiv.style.display = "block";
+
+                setTimeout(() => {
+                    nextPage(pageId);
+                }, 1500);
+            } else {
+                answerInput.value = '';  // Clear the input
+                answerInput.focus();     // Return focus
+                feedbackDiv.textContent = "Incorrect. Try again!";
+                feedbackDiv.className = "feedback incorrect";
+                feedbackDiv.style.display = "block";
+            }
+        }
+        function restartQuest() {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Reset all questions
+            for (const [questionNum, settings] of Object.entries(QUESTION_SETTINGS)) {
+                // Clear answers and feedback
+                document.getElementById(`answer${questionNum}`).value = '';
+                document.getElementById(`feedback${questionNum}`).style.display = 'none';
+
+                // Hide all hints
+                for (let i = 1; i <= settings.hints; i++) {
+                    const hintId = i === 1 ? `hint${questionNum}` : `hint${questionNum}-${i}`;
+                    document.getElementById(hintId).style.display = 'none';
+                }
+
+                // Reset hint button
+                const button = document.getElementById(`hintButton${questionNum}`);
+                if (button) {
+                    button.disabled = true;
+                    button.textContent = `Get Hint (available in ${Math.floor(HINT_DELAY_SECONDS/60)}:${(HINT_DELAY_SECONDS%60).toString().padStart(2, '0')})`;
+                }
+
+                // Clear timer and reset state
+                if (hintTimers[questionNum]) {
+                    clearInterval(hintTimers[questionNum]);
+                }
+                hintStates[questionNum].hintsShown = 0;
+            }
+
+            // Clear wedding date input
+            document.getElementById('weddingDate').value = '';
+            document.getElementById('dateFeedback').style.display = 'none';
+
+            // Show intro page
+            document.getElementById('intro').classList.add('active');
+        }
+
+        // Initialize the game
+        restartQuest();
+         // ===== MOBILE KEYBOARD HANDLING =====
+    window.addEventListener('resize', function() {
+        if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+            window.setTimeout(function() {
+                document.activeElement.scrollIntoViewIfNeeded();
+            }, 0);
+        }
+    });
+    </script>
+</body>
+</html>
