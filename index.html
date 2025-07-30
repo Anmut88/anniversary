@@ -299,7 +299,7 @@
         </div>
         <div class="handwriting">
             <p>I know you remember our dates better than me, but … </p>
-            <p style="margin-left: 100px;"> Do you remember the date when you made mea  proposal?</p>
+            <p style="margin-left: 100px;"> Do you remember the date when you made me a proposal?</p>
         </div>
         <form onsubmit="checkAnswer(event, 'question1', '13/12/2013')">
             <input type="text" id="answer1" placeholder="dd/mm/yyyy" required autofocus inputmode="numeric" maxlength="10" oninput="formatDate(this)">
@@ -347,7 +347,7 @@
                 <strong>Hint 2:</strong> Other main characters are named as 'my' son and your closest relative whose name is not the same as mine.
             </div>
             <div id="hint2-3" class="hint" style="display: none;">
-                <strong>Hint 3:</strong> I didn't know it's that difficult to solve this task. Let me make your life easier - using hints find the movie on this page:
+                <strong>Hint 3:</strong> I didn't know it was that difficult to solve this task. Let me make your life easier - using hints, find the movie on this page:
                 <a href="https://www.kino-teatr.ru/kino/movie/ros/y1995/g14/" target="_blank" rel="noopener noreferrer">https://www.kino-teatr.ru/kino/movie/ros/y1995/g14/</a>
             </div>
         </div>
@@ -380,7 +380,7 @@
                 <strong>Hint 2:</strong> The one you need is outside.
             </div>
             <div id="hint3-3" class="hint" style="display: none;">
-                <strong>Hint 3:</strong> Search for the object that all superstitious people obsessed with
+                <strong>Hint 3:</strong> Search for the object that all superstitious people are obsessed with
             </div>
         </div>
     </div>
@@ -399,7 +399,7 @@
                 number of frying pans in the kitchen, and the number of potted plants we have.</p>
             <p>The sum of all numbers is the key.</p>
         </div>
-        <form onsubmit="checkAnswer(event, 'question4', '36')">
+        <form onsubmit="checkAnswer(event, 'question4', '44')">
             <input type="text" id="answer4" placeholder="Enter the key" required autofocus>
             <div class="button-group">
                 <input type="submit" value="Submit Answer">
@@ -448,8 +448,8 @@
             <p>Where is the key that you found in the car? What does it open?</p>
             <p>Your last challenge is there</p>
         </div>
-        <form onsubmit="checkAnswer(event, 'question5', 'love')">
-            <input type="text" id="answer5" placeholder="Your answer..." required autofocus>
+        <form onsubmit="checkAnswer(event, 'question5', 'твой ангел рядом')">
+            <input type="text" id="answer5" placeholder="Key..." required autofocus>
             <div class="button-group">
                 <input type="submit" value="Submit Answer">
                 <button type="button" class="hint-btn" id="hintButton5" onclick="showHint('hint5')" disabled>Get Hint (available in 2:00)</button>
@@ -462,6 +462,9 @@
             </div>
             <div id="hint5-2" class="hint" style="display: none;">
                 <strong>Hint 2:</strong> Look around you to find the key.
+            </div>
+            <div id="hint5-3" class="hint" style="display: none;">
+                <strong>Hint 3:</strong> Read the task carefully.
             </div>
         </div>
     </div>
@@ -484,14 +487,14 @@
 
     <script>
         // ===== CONFIGURATION =====
-        const HINT_DELAY_SECONDS = 60; // Change this value to set hint delay for all questions
+        const HINT_DELAY_SECONDS = 5; // Change this value to set hint delay for all questions
 
         const QUESTION_SETTINGS = {
             1: { hints: 2 }, // Question 1 has 2 hints
             2: { hints: 3 }, // Question 2 has 3 hints
             3: { hints: 3 }, // Question 2 has 3 hints
             4: { hints: 3 },
-            5: { hints: 2 }
+            5: { hints: 3 }
         };
 
         // ===== GAME STATE =====
@@ -509,7 +512,7 @@
 
         // ===== CORE FUNCTIONS =====
         function checkNumbers() {
-                const correctNumbers = [7, 6, 8, 15]; // Replace with your actual correct numbers
+                const correctNumbers = [7, 7, 8, 22]; 
 
                 for (let i = 1; i <= 4; i++) {
                     const input = document.querySelector(`.digit-box[data-position="${i}"]`);
