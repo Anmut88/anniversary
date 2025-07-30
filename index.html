@@ -214,6 +214,21 @@
             margin: 0 auto;
         }
 
+        .container {
+            height: 200px;
+            position: relative;
+
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 600px) {
             body {
@@ -483,16 +498,21 @@
 
         </video>
     </div>
+    <div class="container">
+        <div class="center">
+            <button onclick=restartQuest()>Restart Quest</button>
+        </div>
+    </div>
 </div>
 
     <script>
         // ===== CONFIGURATION =====
-        const HINT_DELAY_SECONDS = 120; // Change this value to set hint delay for all questions
+        const HINT_DELAY_SECONDS = 3; // Change this value to set hint delay for all questions
 
         const QUESTION_SETTINGS = {
-            1: { hints: 2 }, // Question 1 has 2 hints
-            2: { hints: 3 }, // Question 2 has 3 hints
-            3: { hints: 3 }, // Question 2 has 3 hints
+            1: { hints: 2 },
+            2: { hints: 3 },
+            3: { hints: 3 },
             4: { hints: 3 },
             5: { hints: 3 }
         };
@@ -510,9 +530,25 @@
             };
         }
 
+        window.addEventListener('beforeunload', function() {
+            const activePage = document.querySelector('.page.active');
+            if (activePage) {
+                saveProgress(activePage.id);
+            }
+        });
+
+
         // ===== CORE FUNCTIONS =====
+        function saveProgress(currentPageId) {
+            localStorage.setItem('anniversaryQuestProgress', currentPageId);
+        }
+
+        function loadProgress() {
+            return localStorage.getItem('anniversaryQuestProgress') || 'intro';
+        }
+
         function checkNumbers() {
-                const correctNumbers = [7, 7, 8, 22]; 
+                const correctNumbers = [8, 0, 4, 2]; // Replace with your actual correct numbers
 
                 for (let i = 1; i <= 4; i++) {
                     const input = document.querySelector(`.digit-box[data-position="${i}"]`);
@@ -556,6 +592,35 @@
             input.value = formattedValue;
         }
 
+        function continueQuest() {
+            const savedPage = loadProgress();
+            if (savedPage && savedPage !== 'intro') {
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                // Show saved page
+                document.getElementById(savedPage).classList.add('active');
+
+                // If it's a question page, start the hint timer
+                if (savedPage.startsWith('question')) {
+                    const questionNum = savedPage.replace('question', '');
+                    startHintTimer(questionNum);
+                }
+            }
+        }
+
+        // Update the DOMContentLoaded event to show/hide continue button
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedPage = loadProgress();
+            const continueBtn = document.getElementById('continueBtn');
+
+            if (savedPage && savedPage !== 'intro') {
+                continueBtn.style.display = 'inline-block';
+            } else {
+                continueBtn.style.display = 'none';
+            }
+        });
 
         function checkWeddingDate(event) {
             event.preventDefault();
@@ -580,6 +645,7 @@
                 document.getElementById(currentPageId).classList.remove('active');
                 const nextPageId = pages[currentIndex + 1];
                 document.getElementById(nextPageId).classList.add('active');
+                saveProgress(nextPageId); // Save the new page
 
                 // Auto-focus the input field for the new question
                 const nextQuestionNum = nextPageId.replace('question', '');
@@ -687,6 +753,7 @@
         }
         function restartQuest() {
             // Hide all pages
+            localStorage.removeItem('anniversaryQuestProgress');
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
@@ -726,15 +793,35 @@
         }
 
         // Initialize the game
-        restartQuest();
+       window.addEventListener('DOMContentLoaded', function() {
+            const savedPage = loadProgress();
+            if (savedPage && savedPage !== 'intro') {
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                // Show saved page
+                document.getElementById(savedPage).classList.add('active');
+
+                // If it's a question page, start the hint timer
+                if (savedPage.startsWith('question')) {
+                    const questionNum = savedPage.replace('question', '');
+                    startHintTimer(questionNum);
+                }
+            } else {
+                restartQuest();
+            }
+        });
          // ===== MOBILE KEYBOARD HANDLING =====
-    window.addEventListener('resize', function() {
-        if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-            window.setTimeout(function() {
-                document.activeElement.scrollIntoViewIfNeeded();
-            }, 0);
-        }
-    });
+        window.addEventListener('resize', function() {
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                window.setTimeout(function() {
+                    document.activeElement.scrollIntoViewIfNeeded();
+                }, 0);
+            }
+        });
     </script>
+
+    
 </body>
 </html>
